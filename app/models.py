@@ -40,7 +40,8 @@ class Usuario:
     def borrar(self):
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (self.id_usuario,))
+        id_borrar=int(self.id_usuario)
+        cursor.execute("DELETE FROM usuarios WHERE id_usuario= %s", (id_borrar,))
         db.commit()
         cursor.close()
     #Traigo un usuario por su ID
