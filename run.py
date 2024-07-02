@@ -3,7 +3,7 @@ from app.views import *
 #iMPORTO CONECCION A BASE DE DATOS
 from app.database import init_app
 #Importo corrs para poder trabajar desde otros dominios
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 #Instancia de Flask
 app = Flask(__name__)
@@ -11,10 +11,11 @@ app = Flask(__name__)
 
 
 # Habilito CORS
-CORS(app)
+CORS(app, resources={r"*":{"origin":"http://localhost"}})
 
 #Asociacion de rutas con vistas
 app.route('/helloworld', methods=['GET'])(index)
+
 app.route('/nuevo_usuario', methods=['POST'])(create_usuario)
 app.route('/actualizar_usuario/<int:usuario_id>', methods=['PUT'])(update_usuario)
 app.route('/eliminar_usuario/<int:usuario_id>', methods=['DELETE'])(del_usuario)

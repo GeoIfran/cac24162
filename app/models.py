@@ -2,7 +2,7 @@
 from app.database import get_db
 #Creo una clase usuario
 class Usuario:
-    def __init__(self, apellido, nombre, email, fecha_nacimiento, clave, genero, id_usuario=None):
+    def __init__(self, apellido, nombre, fecha_nacimiento, genero, clave, email, id_usuario=None):
         self.id_usuario = id_usuario
         self.apellido =apellido
         self.nombre = nombre
@@ -45,15 +45,13 @@ class Usuario:
         cursor.close()
     #Traigo un usuario por su ID
     def perfil(usuario_id):
-        print('El id del usuario para ver el perfil es: ',usuario_id)
         db = get_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM usuarios WHERE id_usuario= %s", (usuario_id,))
         row = cursor.fetchone()
         cursor.close()
-        print(row)
         if row:
-            return Usuario(id_usuario=usuario_id, apellido=row[1], nombre=row[2], email=row[3], fecha_nacimiento=row[4], clave=row[5], genero=row[6]) 
+            return Usuario(apellido=row[1], nombre=row[2],  fecha_nacimiento=row[3], genero=row[4], clave=row[5], email=row[6], id_usuario=row[0]) 
         return None
     # Metodo para traer todos los usuarios
     def get_all():
@@ -61,9 +59,7 @@ class Usuario:
         cursor = db.cursor()
         cursor.execute("SELECT id_usuario, apellido, nombre, email, fecha_nacimiento, clave, genero FROM usuarios")
         rows = cursor.fetchall()
-        print (rows)
-
-        usuarios = [  Usuario(id_usuario=row[0], apellido=row[1], nombre=row[2], email=row[3], fecha_nacimiento=row[4], clave=row[5], genero=row[6]) for row in rows]
+        usuarios = [ Usuario(apellido=row[1], nombre=row[2],  fecha_nacimiento=row[4], genero=row[6], clave=row[5], email=row[3], id_usuario=row[0]) for row in rows]
         cursor.close()
         return usuarios
     # creo un metodo que devuelva los atributos de la instancia de usuario en formato json usando como clave los nombres de las columnas en la base de datos

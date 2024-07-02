@@ -9,7 +9,6 @@ def index():
     return jsonify(response)
 #Traer los datos de un usuario
 def get_usuario(usuario_id):
-    print('usuario recibido',type(usuario_id),usuario_id)
     usuario = Usuario.perfil(usuario_id)
     if not usuario:
         return jsonify({'message': 'Usuario no encontrado'}), 404
@@ -17,7 +16,7 @@ def get_usuario(usuario_id):
 def create_usuario():
 #datos recibidos en formato json
     data = request.json
-    nuevo_usuario = Usuario(apellido=data['firstname'], nombre=data['lastname'], email=data['email'], fecha_nacimiento=data['birthdate'], clave=data['password'], genero=data['gender'])
+    nuevo_usuario = Usuario(nombre=data['firstname'], apellido=data['lastname'], email=data['email'], fecha_nacimiento=data['birthdate'], clave=data['password'], genero=data['gender'])
     nuevo_usuario.grabar()
     return jsonify({'message': 'Usuario Creado correctamente','data':data}), 201
 # Actualizar usuario
@@ -30,8 +29,8 @@ def update_usuario(usuario_id):
         return jsonify({'message': 'Usuario no encontrado'}), 404
     #datos recibidos en formato json
     data = request.json
-    usuario.apellido=data['firstname']
-    usuario.nombre=data['lastname']
+    usuario.nombre=data['firstname']
+    usuario.apellido=data['lastname']
     usuario.email=data['email']
     usuario.fecha_nacimiento=data['birthdate']
     usuario.clave=data['password']
