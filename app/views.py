@@ -9,6 +9,7 @@ def index():
     return jsonify(response)
 #Traer los datos de un usuario
 def get_usuario(usuario_id):
+    print('usuario recibido',type(usuario_id),usuario_id)
     usuario = Usuario.perfil(usuario_id)
     if not usuario:
         return jsonify({'message': 'Usuario no encontrado'}), 404
@@ -23,6 +24,7 @@ def create_usuario():
 def update_usuario(usuario_id):
     #creo la instancia de usuario para el id dado
     usuario= Usuario.perfil(usuario_id)
+    usuario.id_usuario=usuario_id
     # confirmo que exista ese id de usuario y sino devuelco usuario no encontrado error 404
     if not usuario:
         return jsonify({'message': 'Usuario no encontrado'}), 404
@@ -34,7 +36,8 @@ def update_usuario(usuario_id):
     usuario.fecha_nacimiento=data['birthdate']
     usuario.clave=data['password']
     usuario.genero=data['gender']
-    return jsonify({'message': 'Usuario modificado exitosamente','data':data,'Usuario':usuario.email}), 201
+    usuario.grabar()
+    return jsonify({'message': 'Usuario modificado exitosamente','data':data,'Usuario':usuario.email,'id': usuario.id_usuario}), 201
 def del_usuario(usuario_id):
     usuario= Usuario.perfil(usuario_id)
     if not usuario:
@@ -44,5 +47,5 @@ def del_usuario(usuario_id):
     return jsonify({'message': 'Usuario ha sido eliminado exitosamente','data':data,'id':usuario_id}), 201
 # creo funcion que traiga todos los usuarios
 def get_all_usuarios():
-    usuarios = Usuario.get_all_usuarios
+    usuarios = Usuario.get_all()
     return jsonify([usuario.serialize() for usuario in usuarios])

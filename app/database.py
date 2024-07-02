@@ -1,7 +1,7 @@
 #Importo librerias necesarias segun el dicatado del curso
 import os
 import mysql.connector
-from flask import g
+from flask import g, __init__
 from dotenv import load_dotenv
 #Cargamos las variables de entorno del achivo .env
 load_dotenv()
@@ -19,6 +19,7 @@ def get_db():
     if 'db' not in g:
     # Crear una nueva conexión a la base de datos y guardarla en 'g'
         g.db = mysql.connector.connect(**DATABASE_CONFIG)
+        print('Esta es la respuesta al conectar a la base de datos',g.db)
     # Retornar la conexión a la base de datos
     return g.db
 # Función para cerrar la conexión a la base de datos
@@ -32,3 +33,4 @@ def close_db(e=None):
 def init_app(app):
 # Registrar 'close_db' para que se ejecute al final del contexto de la aplicación
     app.teardown_appcontext(close_db)
+    print(app.teardown_appcontext(close_db))
